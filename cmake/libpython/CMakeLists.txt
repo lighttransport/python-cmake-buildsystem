@@ -25,6 +25,7 @@ if(UNIX)
       )
 elseif(WIN32)
     list(APPEND MODULE_SOURCES
+        ${SRC_DIR}/Modules/_io/winconsoleio.c
         ${SRC_DIR}/PC/getpathp.c
     )
     # HACK To workaround limitation in escaping logic of CMake, the pythonpath
@@ -385,6 +386,7 @@ if(WIN32 AND IS_PY3)
     list(APPEND LIBPYTHON_TARGET_LIBRARIES
         ws2_32 # Required by signalmodule
         version #
+        shlwapi # winconsoleio
     )
     if(PYTHON_VERSION VERSION_EQUAL "3.5" OR PYTHON_VERSION VERSION_GREATER "3.5")
         list(APPEND LIBPYTHON_TARGET_LIBRARIES version) # Required by sysmodule
