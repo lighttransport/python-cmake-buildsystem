@@ -430,7 +430,8 @@ add_custom_command(
 
 # This is a convenience target allowing to regenerate
 # the frozen sources.
-add_custom_target(freeze_modules DEPENDS ${LIBPYTHON_FROZEN_SOURCES})
+add_custom_target(freeze_modules
+    DEPENDS ${LIBPYTHON_FROZEN_SOURCES})
 
 endif()
 
@@ -524,8 +525,17 @@ if(BUILD_LIBPYTHON_SHARED)
     if(IS_PY3 AND MSVC)
         # XXX Add BuildPython3_dDef
 
-        # Generate 'python3stub.def'
         set(pythonstub_def ${PROJECT_BINARY_DIR}/${LIBPYTHON_ARCHIVEDIR}/${CMAKE_CFG_INTDIR}/python3stub.def)
+        set(python3stub_lib ${PROJECT_BINARY_DIR}/${LIBPYTHON_ARCHIVEDIR}/${CMAKE_CFG_INTDIR}/python3stub.lib)
+
+	# these are generated files
+        set_source_files_properties(
+            ${python3stub_lib}
+            ${python3stub_def}
+            PROPERTIES GENERATED TRUE
+        )
+
+        # Generate 'python3stub.def' from 'python3.def'
         add_custom_command(
             OUTPUT ${pythonstub_def}
             COMMAND ${CMAKE_COMMAND}
@@ -535,10 +545,29 @@ if(BUILD_LIBPYTHON_SHARED)
             COMMAND ${CMAKE_COMMAND} -E copy_if_different
                 ${PROJECT_BINARY_DIR}/CMakeFiles/python3stub.def
                 ${pythonstub_def}
+	    DEPENDS ${SRC_DIR}/PC/python3.def
         )
-        add_custom_target(generate_libpythonstub_def DEPENDS ${pythonstub_def})
+        add_custom_target(generate_libpythonstub_def
+            DEPENDS ${pythonstub_def})
 
-        # Build 'python3.dll'
+        set(machine X86)
+        if(${CMAKE_SIZEOF_VOID_P} EQUAL 8)
+            set(machine X64)
+        endif(${CMAKE_SIZEOF_VOID_P} EQUAL 8)
+
+        # Build 'python3stub.lib' from def
+        add_custom_command(
+	    OUTPUT ${python3stub_lib}
+            COMMAND lib /nologo /def:${pythonstub_def} /out:${python3stub_lib} /MACHINE:${machine}
+	    DEPENDS ${pythonstub_def}
+            COMMENT "Rebuilding python3stub.lib"
+            VERBATIM
+        )
+
+        add_custom_target( generate_libpythonstub_lib
+            DEPENDS ${python3stub_lib})
+
+        # Build 'python3.dll' from generated def and lib
         add_library(${targetname} SHARED ${SRC_DIR}/PC/python3dll.c ${SRC_DIR}/PC/python3.def)
         set_target_properties(${targetname} PROPERTIES
             OUTPUT_NAME python3
@@ -546,23 +575,15 @@ if(BUILD_LIBPYTHON_SHARED)
             RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/${LIBPYTHON_LIBDIR}
             INSTALL_NAME_DIR ${CMAKE_INSTALL_PREFIX}/${LIBPYTHON_LIBDIR}
         )
-        add_dependencies(${targetname} generate_libpythonstub_def)
 
-        # Build 'python3stub.lib' before linking 'python3.dll'
-        set(python3stub_lib ${PROJECT_BINARY_DIR}/${LIBPYTHON_ARCHIVEDIR}/${CMAKE_CFG_INTDIR}/python3stub.lib)
-        set(machine X86)
-        if(${CMAKE_SIZEOF_VOID_P} EQUAL 8)
-            set(machine X64)
-        endif()
-        add_custom_command(
-            TARGET ${targetname} PRE_LINK
-            COMMAND lib /nologo /def:${pythonstub_def} /out:${python3stub_lib} /MACHINE:${machine}
-            COMMENT "Rebuilding python3stub.lib"
-            VERBATIM
-        )
+        # Require stub lib/def
+	#add_dependencies(${targetname} generate_libpythonstub_def)
+        add_dependencies(${targetname} generate_libpythonstub_lib)
 
-        target_link_libraries(${targetname} ${python3stub_lib})
-    endif()
+	# link against stub lib
+	target_link_libraries(${targetname} ${python3stub_lib})
+
+    endif(IS_PY3 AND MSVC)
 
     if(IS_PY3 AND UNIX AND NOT APPLE)
         add_library(${targetname} SHARED ${PROJECT_SOURCE_DIR}/cmake/empty.c)
