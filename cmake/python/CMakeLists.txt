@@ -51,8 +51,15 @@ endif()
 if(UNIX AND PY_VERSION VERSION_GREATER "2.7.4")
     # Setup landmark allowing to run the interpreter from a build tree. See 'getpath.c' for details.
 
-    set (out_sysconfigdata_py ${EXTENSION_BUILD_DIR}/_sysconfigdata.py)
-    set (out_pybuilddir_txt ${BIN_BUILD_DIR}/pybuilddir.txt)
+    # need python -c "import sys;print('_sysconfigdata_m_{}'.format(sys.platform)"
+    if(UNIX AND PY_VERSION VERSION_GREATER "3.6.0")
+        set (sysconfigdata_name "_sysconfigdata_m_${PY_PLATFORM}_.py")
+    else()
+        set (sysconfigdata_name "_sysconfigdata.py")
+    endif()
+
+    set (out_sysconfigdata_py "${EXTENSION_BUILD_DIR}/${sysconfigdata_name}")
+    set (out_pybuilddir_txt "${BIN_BUILD_DIR}/pybuilddir.txt")
 
     set_source_files_properties(
         ${out_sysconfig_data_py} ${outputbuilddir_txt}
@@ -68,7 +75,7 @@ if(UNIX AND PY_VERSION VERSION_GREATER "2.7.4")
           -DPYTHON_BINARY_DIR:PATH=${PROJECT_BINARY_DIR}
           -DEXTENSION_INSTALL_DIR:PATH=${EXTENSION_INSTALL_DIR}
           -P ${PROJECT_SOURCE_DIR}/cmake/UpdateSysconfig.cmake
-        COMMENT "Relocate _sysconfigdata.py and update pybuilddir.txt"
+        COMMENT "Relocate _sysconfigdata*.py and update pybuilddir.txt"
         WORKING_DIRECTORY ${BIN_BUILD_DIR}
 	DEPENDS python
         )
@@ -77,7 +84,7 @@ if(UNIX AND PY_VERSION VERSION_GREATER "2.7.4")
         DEPENDS ${out_pybuilddir_txt} ${out_sysconfigdata_py}
         )
 
-    install(FILES ${out_sysconfig_data_py}
+    install(FILES ${out_sysconfigdata_py}
         DESTINATION ${PYTHONHOME}/)
 endif()
 

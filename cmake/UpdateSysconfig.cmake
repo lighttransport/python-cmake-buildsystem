@@ -34,11 +34,11 @@ endif()
 # Read PYBUILDDIR value
 file(READ ${_pybuilddir}.backup PYBUILDDIR)
 
-# Copy _sysconfigdata.py
-execute_process(COMMAND ${CMAKE_COMMAND} -E copy_if_different
-  ${BIN_BUILD_DIR}/${PYBUILDDIR}/_sysconfigdata.py
-  ${PYTHON_BINARY_DIR}/${EXTENSION_INSTALL_DIR}/_sysconfigdata.py
-  )
-
 # Create new file
 file(WRITE "${_pybuilddir}" "${EXTENSION_INSTALL_DIR}")
+
+# Copy _sysconfigdata*.py
+file(GLOB sysconfig_file
+  "${BIN_BUILD_DIR}/${PYBUILDDIR}/_sysconfigdata*.py")
+file(COPY "${sysconfig_file}"
+     DESTINATION "${PYTHON_BINARY_DIR}/${EXTENSION_INSTALL_DIR}" )
