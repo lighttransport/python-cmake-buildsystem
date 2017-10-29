@@ -9,6 +9,10 @@ include(asv_cmake_defaults)
 asv_cmake_defaults( )
 ###############
 
+# don't play dll rename game, python confused
+# Windows make _d, puts in python-debug dir
+#SET(CMAKE_DEBUG_POSTFIX "" )
+
 string(REPLACE "." ";" VERSION_LIST ${PYTHON_VERSION})
 list(GET VERSION_LIST 0 PY_VERSION_MAJOR)
 list(GET VERSION_LIST 1 PY_VERSION_MINOR)
