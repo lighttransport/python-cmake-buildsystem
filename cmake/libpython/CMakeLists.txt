@@ -1,5 +1,4 @@
 add_definitions(-DPy_BUILD_CORE)
-add_definitions(-DNDEBUG)
 
 set(MODULE_SOURCES # Equivalent to MODULE_OBJS in Makefile.pre
     ${PROJECT_BINARY_DIR}/CMakeFiles/config.c
@@ -64,7 +63,7 @@ elseif(WIN32)
             "LANDMARK=${_wide_char_modifier}\"${PYTHONHOME_ESCAPED}\\\\os.py\""
             "PYTHONPATH=${_wide_char_modifier}\"${PYTHONPATH}\""
     )
-endif()
+endif(UNIX)
 
 set(PARSER_COMMON_SOURCES # Equivalent to POBJS in Makefile.pre
     ${SRC_DIR}/Parser/acceler.c
@@ -479,7 +478,10 @@ function(add_libpython name type install component)
         # Explicitly disable COMDAT folding. Note that this was not required
         # in the original "pcbuild.sln" solution file because it was side effect
         # of having "/Zi" flag set.
-        set_target_properties(${name} PROPERTIES LINK_FLAGS /OPT:NOICF)
+	if(NOT CMAKE_BUILD_TYPE STREQUAL "Debug")
+            set_target_properties(${name} PROPERTIES LINK_FLAGS /OPT:NOICF)
+	endif()
+        install(FILES $<TARGET_PDB_FILE:${name}> DESTINATION bin OPTIONAL)
     endif()
 
     set_target_properties(${name} PROPERTIES
@@ -584,6 +586,9 @@ if(BUILD_LIBPYTHON_SHARED)
 
 	# link against stub lib
 	target_link_libraries(${targetname} ${python3stub_lib})
+        if(MSVC)
+            install(FILES $<TARGET_PDB_FILE:${targetname}> DESTINATION bin OPTIONAL)
+        endif(MSVC)
 
     endif(IS_PY3 AND MSVC)
 
