@@ -485,6 +485,7 @@ else()
                 expat/xmlparse.c
                 expat/xmlrole.c
                 expat/xmltok.c
+                expat/loadlibrary.c
         DEFINITIONS ${_pyexpat_definitions}
         INCLUDEDIRS ${SRC_DIR}/Modules/expat
     )

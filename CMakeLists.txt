@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 2.8.6)
 
-set(PYTHON_VERSION "3.6.2" CACHE STRING "The version of Python to build.")
+set(PYTHON_VERSION "3.6.3" CACHE STRING "The version of Python to build.")
 
 ###############
 # ASI default settings
@@ -192,7 +192,7 @@ get_filename_component(_parent_dir ${CMAKE_CURRENT_BINARY_DIR} PATH)
 string(REGEX REPLACE "rc[1-9]$" "" _py_version_patch_no_rc ${PY_VERSION_PATCH})
 set(_py_version_no_rc "${PY_VERSION_MAJOR}.${PY_VERSION_MINOR}.${_py_version_patch_no_rc}")
 set(_download_link "https://www.python.org/ftp/python/${_py_version_no_rc}/Python-${PY_VERSION}.tgz")
-# Variable below represent the set of supported python version.
+# Variable below represent the set of supported python "tgz" version.
 set(_download_2.7.3_md5 "2cf641732ac23b18d139be077bd906cd")
 set(_download_2.7.4_md5 "592603cfaf4490a980e93ecb92bde44a")
 set(_download_2.7.5_md5 "b4f01a1d0ba0b46b05c73b2ac909b1df")
@@ -210,6 +210,7 @@ set(_download_3.5.3_md5 "6192f0e45f02575590760e68c621a488")
 set(_download_3.5.4_md5 "2ed4802b7a2a7e40d2e797272bf388ec")
 set(_download_3.6.1_md5 "2d0fc9f3a5940707590e07f03ecb08b9")
 set(_download_3.6.2_md5 "e1a36bfffdd1d3a780b1825daf16e56c")
+set(_download_3.6.3_md5 "e9180c69ed9a878a4a8a3ab221e32fa9")
 set(_extracted_dir "Python-${PY_VERSION}")
 
 if(NOT EXISTS ${SRC_DIR}/${_landmark} AND DOWNLOAD_SOURCES)
