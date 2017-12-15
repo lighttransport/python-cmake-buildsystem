@@ -111,11 +111,10 @@ option(USE_SYSTEM_LIBRARIES "Use system libraries" ON)
 # Set platform dependent defaults
 set(_use_builtin_zlib_default OFF)
 set(_use_system_zlib_default ON)
-# ASI - we have zlib
-#if(WIN32)
-#  set(_use_builtin_zlib_default ON)
-#  set(_use_system_zlib_default OFF)
-#endif()
+if(WIN32)
+  set(_use_builtin_zlib_default ON)
+  set(_use_system_zlib_default OFF)
+endif()
 
 cmake_dependent_option(USE_SYSTEM_BZip2 "Use system BZip2" ON "USE_SYSTEM_LIBRARIES" OFF)
 cmake_dependent_option(USE_SYSTEM_Curses "Use system Curses" ON "USE_SYSTEM_LIBRARIES" OFF)
