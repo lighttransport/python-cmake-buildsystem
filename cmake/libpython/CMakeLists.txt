@@ -24,9 +24,13 @@ if(UNIX)
       )
 elseif(WIN32)
     list(APPEND MODULE_SOURCES
-        ${SRC_DIR}/Modules/_io/winconsoleio.c
         ${SRC_DIR}/PC/getpathp.c
     )
+    if ( ${PY_VERSION} GREATER "3.5.4" )
+        list(APPEND MODULE_SOURCES
+            ${SRC_DIR}/Modules/_io/winconsoleio.c
+            )
+    endif ()
     # HACK To workaround limitation in escaping logic of CMake, the pythonpath
     #      separator is conditionally set depending of the version of Visual Studio.
     #      See http://cmake.org/Bug/view.php?id=14073
@@ -385,7 +389,6 @@ if(WIN32 AND IS_PY3)
     list(APPEND LIBPYTHON_TARGET_LIBRARIES
         ws2_32 # Required by signalmodule
         version #
-        shlwapi # winconsoleio
     )
     if(PYTHON_VERSION VERSION_EQUAL "3.5" OR PYTHON_VERSION VERSION_GREATER "3.5")
         list(APPEND LIBPYTHON_TARGET_LIBRARIES version) # Required by sysmodule
