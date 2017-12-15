@@ -252,6 +252,7 @@ if(UNIX)
     list(APPEND PYTHON_COMMON_SOURCES
         ${SRC_DIR}/Python/frozenmain.c
     )
+    # too hard to do target for random.c
 else()
     list(APPEND PYTHON_COMMON_SOURCES
         ${SRC_DIR}/Python/frozen.c
@@ -399,6 +400,7 @@ add_executable(_freeze_importlib
   ${SRC_DIR}/Programs/_freeze_importlib.c
   ${LIBPYTHON_OMIT_FROZEN_SOURCES}
   )
+target_compile_definitions( _freeze_importlib PRIVATE HAVE_LINUX_RANDOM_H)
 target_link_libraries(_freeze_importlib ${LIBPYTHON_TARGET_LIBRARIES})
 if(builtin_compile_definitions_without_py_limited_api)
   target_compile_definitions(_freeze_importlib PUBLIC ${builtin_compile_definitions_without_py_limited_api})
@@ -468,6 +470,7 @@ endif()
 # Build python libraries
 function(add_libpython name type install component)
     add_library(${name} ${type} ${LIBPYTHON_SOURCES})
+    target_compile_definitions( ${name} PRIVATE HAVE_LINUX_RANDOM_H)
     target_link_libraries(${name} ${LIBPYTHON_TARGET_LIBRARIES})
 
     if(MSVC)
