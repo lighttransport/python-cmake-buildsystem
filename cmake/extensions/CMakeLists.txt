@@ -523,6 +523,8 @@ add_python_extension(_sha1 ${WIN32_BUILTIN} SOURCES sha1module.c)
 add_python_extension(_sha256 ${WIN32_BUILTIN} SOURCES sha256module.c)
 add_python_extension(_sha512 ${WIN32_BUILTIN} SOURCES sha512module.c)
 
+add_python_extension(_sha3 ${WIN32_BUILTIN} SOURCES _sha3/sha3module.c)
+
 endif()
 
 
@@ -687,6 +689,19 @@ else()
         INCLUDEDIRS ${SRC_DIR}/Modules/zlib
     )
 endif()
+
+add_python_extension(_blake2 BUILTIN
+    REQUIRES
+    SOURCES
+        _blake2/blake2b_impl.c
+        _blake2/blake2module.c
+        _blake2/blake2s_impl.c
+        _blake2/impl/blake2b.c
+        _blake2/impl/blake2s.c
+    DEFINITIONS HAVE_SSE2
+    INCLUDEDIRS ${SRC_DIR}/Modules/_blake2
+                ${SRC_DIR}/Modules/_blake2/impl
+)
 
 if(USE_LIBEDIT AND NOT BUILTIN_READLINE)
     set_target_properties(extension_readline PROPERTIES
