@@ -78,7 +78,7 @@ option(BUILD_LIBPYTHON_SHARED ${_build_libpython_shared_desc} ${_build_libpython
 option(BUILD_EXTENSIONS_AS_BUILTIN "Default all modules as builtin to libpython" OFF)
 option(USE_LIB64 "Search for dependencies and install to prefix/lib64 instead of prefix/lib" OFF)
 if(WIN32)
-  option(INSTALL_WINDOWS_TRADITIONAL "Install the executable and extensions in the traditional location" OFF)
+  option(INSTALL_WINDOWS_TRADITIONAL "Install the executable and extensions in the traditional location" ON)
   set(_build_wininst_default ON)
   if(CMAKE_CROSSCOMPILING)
     set(_build_wininst_default OFF)
