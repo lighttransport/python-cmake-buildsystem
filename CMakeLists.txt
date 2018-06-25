@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 2.8.6)
 
-set(PYTHON_VERSION "3.6.3" CACHE STRING "The version of Python to build.")
+set(PYTHON_VERSION "3.6.5" CACHE STRING "The version of Python to build.")
 
 ###############
 # ASI default settings
@@ -211,6 +211,8 @@ set(_download_3.5.4_md5 "2ed4802b7a2a7e40d2e797272bf388ec")
 set(_download_3.6.1_md5 "2d0fc9f3a5940707590e07f03ecb08b9")
 set(_download_3.6.2_md5 "e1a36bfffdd1d3a780b1825daf16e56c")
 set(_download_3.6.3_md5 "e9180c69ed9a878a4a8a3ab221e32fa9")
+set(_download_3.6.4_md5 "9de6494314ea199e3633211696735f65")
+set(_download_3.6.5_md5 "ab25d24b1f8cc4990ade979f6dc37883")
 set(_extracted_dir "Python-${PY_VERSION}")
 
 if(NOT EXISTS ${SRC_DIR}/${_landmark} AND DOWNLOAD_SOURCES)
