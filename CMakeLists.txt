@@ -129,7 +129,7 @@ if(IS_PY3)
   cmake_dependent_option(USE_SYSTEM_LIBMPDEC "Use system LIBMPDEC" ON "USE_SYSTEM_LIBRARIES" OFF)
 endif()
 
-cmake_dependent_option(USE_BUILTIN_ZLIB "Use builtin ZLIB" ${_use_builtin_zlib_default} "NOT USE_SYSTEM_ZLIB" OFF)
+cmake_dependent_option(USE_BUILTIN_ZLIB "Use builtin ZLIB" ON "NOT USE_SYSTEM_ZLIB" OFF)
 
 cmake_dependent_option(USE_LIBEDIT "Use libedit instead of readline" OFF
                        "USE_SYSTEM_READLINE" OFF)
