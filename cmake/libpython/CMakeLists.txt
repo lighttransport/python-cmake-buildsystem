@@ -243,7 +243,6 @@ set(PYTHON_COMMON_SOURCES
     ${SRC_DIR}/Python/pystrcmp.c
     ${SRC_DIR}/Python/Python-ast.c
     ${SRC_DIR}/Python/pythonrun.c
-    ${SRC_DIR}/Python/random.c
     ${SRC_DIR}/Python/structmember.c
     ${SRC_DIR}/Python/symtable.c
     ${SRC_DIR}/Python/sysmodule.c
@@ -254,7 +253,6 @@ if(UNIX)
     list(APPEND PYTHON_COMMON_SOURCES
         ${SRC_DIR}/Python/frozenmain.c
     )
-    # too hard to do target for random.c
 else()
     list(APPEND PYTHON_COMMON_SOURCES
         ${SRC_DIR}/Python/frozen.c
