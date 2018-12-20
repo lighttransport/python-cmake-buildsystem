@@ -1,0 +1,24 @@
+From 0811977b42f2dc042f3b25306882ed5519d4a1c2 Mon Sep 17 00:00:00 2001
+From: John Lund <jel@appsmiths.com>
+Date: Thu, 20 Dec 2018 10:26:52 -0600
+Subject: [PATCH] Modules/_io/_iomodule.c needs windows.h on VS 2017
+
+---
+ Modules/_io/_iomodule.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/Modules/_io/_iomodule.c b/Modules/_io/_iomodule.c
+index f4d3cbd..706dd55 100644
+--- a/Modules/_io/_iomodule.c
++++ b/Modules/_io/_iomodule.c
+@@ -21,6 +21,7 @@
+ #endif /* HAVE_SYS_STAT_H */
+ 
+ #ifdef MS_WINDOWS
++#include <windows.h>
+ #include <consoleapi.h>
+ #endif
+ 
+-- 
+2.10.1
+
