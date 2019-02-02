@@ -1,0 +1,27 @@
+From 70d83089fb4af46e98a336a7e4464d17be0b05c2 Mon Sep 17 00:00:00 2001
+From: Dan Dees <dand@appsmiths.com>
+Date: Fri, 1 Feb 2019 22:52:13 -0600
+Subject: [PATCH] pyconfig.h turn off link to python37_d
+
+---
+ PC/pyconfig.h | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
+
+diff --git a/PC/pyconfig.h b/PC/pyconfig.h
+index 5c141d8..ea80a0d 100644
+--- a/PC/pyconfig.h
++++ b/PC/pyconfig.h
+@@ -283,9 +283,7 @@ Py_NO_ENABLE_SHARED to find out.  Also support MS_NO_COREDLL for b/w compat */
+                         /* So MSVC users need not specify the .lib
+                         file in their Makefile (other compilers are
+                         generally taken care of by distutils.) */
+-#                       if defined(_DEBUG)
+-#                               pragma comment(lib,"python37_d.lib")
+-#                       elif defined(Py_LIMITED_API)
++#                       if defined(Py_LIMITED_API)
+ #                               pragma comment(lib,"python3.lib")
+ #                       else
+ #                               pragma comment(lib,"python37.lib")
+-- 
+2.11.1
+
