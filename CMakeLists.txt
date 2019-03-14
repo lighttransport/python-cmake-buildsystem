@@ -134,11 +134,9 @@ option(WITH_TSC "profile with the Pentium timestamp counter" OFF)
 option(ENABLE_IPV6 "Enable IP v6" ON)
 option(WITH_DOC_STRINGS "Enable if you want documentation strings in extension modules" ON)
 set(Py_DEBUG OFF) # Py_Debug turn on extra stuff
-if(CMAKE_BUILD_TYPE MATCHES Debug)
-    if(UNIX)
-        SET(CMAKE_DEBUG_POSTFIX "") # no _d on linux
-    endif(UNIX)
-endif(CMAKE_BUILD_TYPE MATCHES Debug)
+# no _d, screws up pip installing stuff without _d
+# use "different directory" - python and python-debug
+SET(CMAKE_DEBUG_POSTFIX "")
 option(WITH_PYMALLOC "Define if you want to compile in Python-specific mallocs" ON)
 option(WITH_THREAD "Compile in rudimentary thread support" ON)
 if(UNIX)
