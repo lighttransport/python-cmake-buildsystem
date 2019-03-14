@@ -5,12 +5,14 @@ from appsmiths.automata import Automata
 import run_py_ver
 from pathlib import Path
 
+is_nt = os.name == 'nt'
+
 
 def compose_venv_root(a):
     pdir = pathlib.Path(sys.executable).parents[0]
 
     # where do we put the venv?
-    drive = 'i:/' if os.name == 'nt' else '/i'
+    drive = 'i:/' if is_nt else '/i'
     vext = 'dbg' if 'debug' in str(pdir) else 'rel'
     return Path(drive, 'pyenv', f'glue-run-{vext}')
 
@@ -28,7 +30,7 @@ def make_venv(a, VR):
 
 
 def activate_venv(a, VR):
-    bindir = 'Scripts' if os.name == 'nt' else 'bin'
+    bindir = 'Scripts' if is_nt else 'bin'
 
     # active the venv - sets a few vars
     # https://stackoverflow.com/questions/436198/what-is-an-alternative-to-execfile-in-python-3

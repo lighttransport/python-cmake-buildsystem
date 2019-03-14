@@ -15,7 +15,7 @@ def make_pip(a, pip_path='pip3'):
     # import pip
     # pip._internal.main(['install', '--upgrade', 'pip'])
 
-    a.run_string(f'{pip_path} install --upgrade pip')
+    a.run_string(f'{pip_path} install -vvv --upgrade pip')
 
 
 def main(argv=None):

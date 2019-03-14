@@ -1,6 +1,7 @@
 import sys
 import os
 import site
+import our_pkgs
 from pathlib import Path
 from appsmiths.automata import Automata
 
@@ -114,7 +115,7 @@ def main(argv=None):
         usage()
 
     # caller to pass pyroot
-    PR = argv[1]
+    PR = Path(argv[1])
     # and script name to run
     SCRIPT = argv[2]
     print('run_py_ver')
@@ -125,19 +126,11 @@ def main(argv=None):
     asi = os.environ['ASI']
     a = Automata(asi, log_name=logfile, showcmds=True, verbose=False)
 
-    if os.name == 'nt':
-        childenv = set_win_py_env(PR)
-    else:
-        childenv = set_unix_py_env(PR)
-
-    # turn off frickin' thing!
-    site.ENABLE_USER_SITE = False
-
-    print_site()
+    # print_site()
 
     # spawn python child env with corrected env
-    pyexe = f'{PR}/python.exe' if os.name == 'nt' else f'{PR}/bin/python'
-    a.run_string(f'{pyexe} -s {SCRIPT}', env=childenv)
+    pyexe = our_pkgs.pyexe(PR)
+    a.run_string(f'{pyexe} -s {SCRIPT}')
 
 
 if __name__ == '__main__':

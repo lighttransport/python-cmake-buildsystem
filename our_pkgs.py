@@ -5,19 +5,24 @@ from shutil import which
 from pathlib import Path
 
 is_nt = os.name == 'nt'
+bindir = 'Scripts' if is_nt else 'bin'
+ext = '.exe' if is_nt else ''
 
 
-def pyexe():
+def pyexe(PR):
+    # linux always bin
+    # windows either Scripts (virtualenv) or .. (traditional)
+    pydir = PR / bindir
+    return pydir / f'python{ext}'
+
     # search our system path, rather than spawn path
     return which('python')
 
 
 def get_pipexe(PR):
-    ext = '.exe' if os.name == 'nt' else ''
     if PR is None:
         return Path(f'pip3{ext}')
 
-    bindir = 'Scripts' if is_nt else 'bin'
     pipexe = PR
     pipexe = pipexe / bindir
     return pipexe / f'pip3.6{ext}'
@@ -29,18 +34,18 @@ def install_pkgs(a, pkglist, PR):
     print(f'pip installing prefix={PR}')
     pipe = get_pipexe(PR)
     pkgs = ' '.join(pkglist)
-    a.run_string(f'{pipe} install --upgrade --prefix={PR} {pkgs}')
+    a.run_string(f'{pipe} install -vvv --upgrade --prefix={PR} {pkgs}')
 
 
 def install_ports(a, portlist, PR=None):
     drive = 'i:/' if is_nt else '/i'
-    dir = Path(drive, 'ports', 'repo')
+    repo_dir = Path(drive, 'ports', 'repo')
 
     for repname in portlist:
-        repo = Path(dir, repname)
+        repo_dir = Path(repo_dir, repname)
 
-        os.chdir(str(repo))
-        a.run_string(f'{pyexe()} setup.py install')
+        os.chdir(str(repo_dir))
+        a.run_string(f'{pyexe(PR)} setup.py install --prefix={PR}')
 
 
 def install_virtualenv(a, PR=None):
