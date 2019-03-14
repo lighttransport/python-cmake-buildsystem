@@ -7,10 +7,11 @@ import make_venv
 import run_py_ver
 from pathlib import Path
 
+is_nt = os.name == 'nt'
+
 
 def setup_py_env(a, PR):
 
-    is_nt = os.name == 'nt'
     bindir = 'Scripts' if is_nt else 'bin'
     ext = '.exe' if is_nt else ''
     pydir = PR if is_nt else PR / bindir
@@ -37,7 +38,7 @@ def main(argv=None):
     run_py_ver.print_site()
 
     # install into our build
-    if os == 'nt':
+    if is_nt:
         PR = Path(sys.executable).parents[0]
     else:
         PR = Path(sys.executable).parents[1]  # allow for bin
