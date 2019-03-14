@@ -26,9 +26,24 @@ def setup_py_env(a, PR):
     make_pip.make_pip(a, pipexe)
 
 
+def usage():
+    msg = \
+f"""
+Usage: python {__file__} python_root
+"""
+    print(msg)
+    sys.exit(-1)
+
+
 def main(argv=None):
     if argv is None:
         argv = sys.argv
+
+    if len(argv) < 2:
+        usage()
+
+    # caller to pass pyroot
+    PR = Path(argv[1])
 
     logfile = 'log.txt'
     asi = os.environ['ASI']
@@ -38,7 +53,6 @@ def main(argv=None):
     run_py_ver.print_site()
 
     # install into our build
-    PR = Path(sys.executable).parents[1]  # allow for bindir
     setup_py_env(a, PR)
     our_pkgs.install_virtualenv(a, PR)
     our_pkgs.install_our_pkgs(a, PR)
