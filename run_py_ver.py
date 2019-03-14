@@ -5,12 +5,13 @@ import our_pkgs
 from pathlib import Path
 from appsmiths.automata import Automata
 
-PATHSEP = ';' if os.name == 'nt' else ':'
+is_nt = os.name == 'nt'
+PATHSEP = ';' if is_nt else ':'
 
 
 def _print_env(env, name):
     val = env[name]
-    sep = ';' if os.name == 'nt' else ':'
+    sep = ';' if is_nt else ':'
     lval = val.split(sep)
     print(f'{name}=[')
     for subval in lval:
@@ -52,7 +53,7 @@ def set_unix_py_env(PR):
     worklist = (
         ('PATH', Path(PR, 'bin')),  # exe
         ('LD_LIBRARY_PATH', Path(PR, 'lib')),  # .so
-        ('PYTHONPATH', Path(PR, 'lib', f'{pyvdir}'), Path(PR, 'lib'))
+        ('PYTHONPATH', Path(PR, 'lib', pyvdir), Path(PR, 'lib'))
     )
     return _set_py_env(PR, worklist)
 
@@ -94,7 +95,7 @@ def print_site():
     # other crap
     print_env_path('PATH')
     print_env_path('PYTHONPATH')
-    if os.name != 'nt':
+    if not is_nt:
         print_env_path('LD_LIBRARY_PATH')
 
 
@@ -126,11 +127,14 @@ def main(argv=None):
     asi = os.environ['ASI']
     a = Automata(asi, log_name=logfile, showcmds=True, verbose=False)
 
-    # print_site()
+    if is_nt:
+        childenv = set_win_py_env(PR)
+    else:
+        childenv = set_unix_py_env(PR)
 
     # spawn python child env with corrected env
     pyexe = our_pkgs.pyexe(PR)
-    a.run_string(f'{pyexe} -s {SCRIPT}')
+    a.run_string(f'{pyexe} -s {SCRIPT}', env=childenv)
 
 
 if __name__ == '__main__':

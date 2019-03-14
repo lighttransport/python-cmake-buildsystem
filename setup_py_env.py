@@ -34,6 +34,7 @@ def main(argv=None):
     asi = os.environ['ASI']
     a = Automata(asi, log_name=logfile, showcmds=True, verbose=False)
 
+    print('doing setup_py_env.py')
     run_py_ver.print_site()
 
     # install into our build
