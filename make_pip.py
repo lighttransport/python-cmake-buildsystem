@@ -14,10 +14,12 @@ def make_pip(a, PR):
     pydir = PR / bindir
 
     # put pip in current environment, without internet
-    print(f'ensurepip {sys.executable}')
-    ensurepip.bootstrap(upgrade=True, default_pip=True, verbosity=10)
-    #pyexe = Path(pydir, f'python{ext}')
-    #a.run_string(f'{pyexe} -m ensurepip --default-pip --upgrade --verbose')
+    #print(f'ensurepip {sys.executable}')
+    #ensurepip.bootstrap(upgrade=True, default_pip=True, verbosity=10)
+    pyexe = Path(pydir, f'python{ext}')
+    print(f'ensurepip {pyexe}')
+    a.run_string(f'{pyexe} -s -m ensurepip --default-pip --upgrade --verbose')
+    # a.run_string(f'{pyexe} -s -m ensurepip --default-pip --upgrade --verbose --root {PR}')
 
     # via internet
     # run the pip we just installed
