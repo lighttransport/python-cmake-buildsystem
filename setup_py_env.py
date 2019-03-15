@@ -20,10 +20,7 @@ def setup_py_env(a, PR):
     a.cp(str(pydir / f'python{ext}'),
          str(pydir / f'python3{ext}'))
 
-    # find pip location reletive to running interpreter
-    pipexe = pydir / f'pip3.6{ext}'
-
-    make_pip.make_pip(a, pipexe)
+    make_pip.make_pip(a, PR)
 
 
 def usage():
