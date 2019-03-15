@@ -27,9 +27,8 @@ def make_pip(a, PR):
     # pip._internal.main(['install', '--upgrade', 'pip'])
 
     pip = Path(pydir, f'pip3.6{ext}')
-    a.run_string(f'{pip} install -vvv --upgrade pip')
-    # a.run_string(
-    #     f'{pip} install -vvv --upgrade --prefix {PR} pip')
+    # a.run_string(f'{pip} install -vvv --upgrade pip')
+    a.run_string(f'{pip} install -vvv --upgrade --prefix {PR} pip')
 
 
 def main(argv=None):
