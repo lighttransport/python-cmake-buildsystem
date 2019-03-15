@@ -127,14 +127,15 @@ def main(argv=None):
     asi = os.environ['ASI']
     a = Automata(asi, log_name=logfile, showcmds=True, verbose=False)
 
-    if is_nt:
-        childenv = set_win_py_env(PR)
-    else:
+    if not is_nt:
         childenv = set_unix_py_env(PR)
 
     # spawn python child env with corrected env
     pyexe = our_pkgs.pyexe(PR)
-    a.run_string(f'{pyexe} -s {SCRIPT}', env=childenv)
+    if is_nt:
+        a.run_string(f'{pyexe} -s {SCRIPT}')
+    else:
+        a.run_string(f'{pyexe} -s {SCRIPT}', env=childenv)
 
 
 if __name__ == '__main__':
