@@ -11,11 +11,15 @@ def make_pip(a, pip_path='pip3'):
     print(f'ensurepip {sys.executable}')
     ensurepip.bootstrap(upgrade=True, default_pip=True, verbosity=10)
 
-    print('pip upgrade')  # via internet
+    # via internet
+    # run the pip we just installed
+    print('pip upgrade')
     # import pip
     # pip._internal.main(['install', '--upgrade', 'pip'])
 
     a.run_string(f'{pip_path} install -vvv --upgrade pip')
+    # a.run_string(
+    #     f'{pip_path} install -vvv --upgrade --target={PR} pip')
 
 
 def main(argv=None):
