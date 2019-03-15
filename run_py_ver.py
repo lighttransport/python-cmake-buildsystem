@@ -119,6 +119,9 @@ def main(argv=None):
     PR = Path(argv[1])
     # and script name to run
     SCRIPT = argv[2]
+    ARGS = []
+    if len(argv) > 2:
+        ARGS = argv[3:]
     print('run_py_ver')
     print(f'PYTHONROOT={PR}')
     print(f'SCRIPT={SCRIPT}')
@@ -132,10 +135,11 @@ def main(argv=None):
 
     # spawn python child env with corrected env
     pyexe = our_pkgs.pyexe(PR)
+    argstr = ' '.join(ARGS)
     if is_nt:
-        a.run_string(f'{pyexe} -s {SCRIPT}')
+        a.run_string(f'{pyexe} -s {SCRIPT} {argstr}')
     else:
-        a.run_string(f'{pyexe} -s {SCRIPT}', env=childenv)
+        a.run_string(f'{pyexe} -s {SCRIPT} {argstr}', env=childenv)
 
 
 if __name__ == '__main__':
