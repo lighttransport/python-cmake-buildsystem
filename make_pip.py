@@ -13,13 +13,14 @@ def make_pip(a, pip_path='pip3'):
 
     # via internet
     # run the pip we just installed
+    # https://stackoverflow.com/questions/2915471/install-a-python-package-into-a-different-directory-using-pip/53870246#53870246
     print('pip upgrade')
     # import pip
     # pip._internal.main(['install', '--upgrade', 'pip'])
 
     a.run_string(f'{pip_path} install -vvv --upgrade pip')
     # a.run_string(
-    #     f'{pip_path} install -vvv --upgrade --target={PR} pip')
+    #     f'{pip_path} install -vvv --upgrade --root {PR} pip')
 
 
 def main(argv=None):
