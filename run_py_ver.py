@@ -38,7 +38,8 @@ def _set_py_env(PR, worklist):
 
 def set_unix_py_env(PR):
 
-    pyvdir = 'python3.6'
+    # assume python 3.7
+    pyvdir = 'python3.7'
     worklist = (
         ('PATH', PR / 'bin'),  # exe
         ('LD_LIBRARY_PATH', PR / 'lib'),  # .so
