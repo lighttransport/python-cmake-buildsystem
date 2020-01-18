@@ -69,15 +69,15 @@ endif()
 
 set(PARSER_COMMON_SOURCES # Equivalent to POBJS in Makefile.pre
     ${SRC_DIR}/Parser/acceler.c
-    ${SRC_DIR}/Parser/bitset.c
-    ${SRC_DIR}/Parser/firstsets.c
+    # ${SRC_DIR}/Parser/bitset.c
+    # ${SRC_DIR}/Parser/firstsets.c
     ${SRC_DIR}/Parser/grammar1.c
-    ${SRC_DIR}/Parser/grammar.c
+    # ${SRC_DIR}/Parser/grammar.c
     ${SRC_DIR}/Parser/listnode.c
-    ${SRC_DIR}/Parser/metagrammar.c
+    # ${SRC_DIR}/Parser/metagrammar.c
     ${SRC_DIR}/Parser/node.c
     ${SRC_DIR}/Parser/parser.c
-    ${SRC_DIR}/Parser/pgen.c
+    # ${SRC_DIR}/Parser/pgen.c
 )
 
 set(OBJECT2_SOURCES
@@ -301,7 +301,7 @@ list(APPEND MODULE_SOURCES
     ${SRC_DIR}/Modules/symtablemodule.c
     ${SRC_DIR}/Modules/_weakref.c
     ${SRC_DIR}/Modules/xxsubtype.c
-    ${SRC_DIR}/Modules/zipimport.c
+    # ${SRC_DIR}/Modules/zipimport.c
 )
 
 set(LIBPYTHON_OMIT_FROZEN_SOURCES
@@ -461,7 +461,7 @@ set(PGEN2_SOURCES
 )
 set(PGEN3_SOURCES
     ${SRC_DIR}/Python/dynamic_annotations.c
-    ${SRC_DIR}/Parser/parsetok_pgen.c
+    # ${SRC_DIR}/Parser/parsetok_pgen.c
 )
 add_executable(pgen
     ${PARSER_COMMON_SOURCES}
@@ -469,9 +469,9 @@ add_executable(pgen
     ${SRC_DIR}/Objects/obmalloc.c
     ${SRC_DIR}/Python/mysnprintf.c
     ${SRC_DIR}/Python/pyctype.c
-    ${SRC_DIR}/Parser/tokenizer_pgen.c
-    ${SRC_DIR}/Parser/printgrammar.c
-    ${SRC_DIR}/Parser/pgenmain.c
+    # ${SRC_DIR}/Parser/tokenizer_pgen.c
+    # ${SRC_DIR}/Parser/printgrammar.c
+    # ${SRC_DIR}/Parser/pgenmain.c
 )
 if(builtin_compile_definitions_without_py_limited_api)
   target_compile_definitions(pgen PUBLIC ${builtin_compile_definitions_without_py_limited_api})
