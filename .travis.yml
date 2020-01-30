@@ -9,6 +9,9 @@ compiler:
  - clang
 
 env:
+ - PY_VERSION=3.7.6
+ - PY_VERSION=3.7.5
+ - PY_VERSION=3.7.4
  - PY_VERSION=3.7.4
  - PY_VERSION=3.7.3
  - PY_VERSION=3.7.2
