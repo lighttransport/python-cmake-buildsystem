@@ -1,46 +1,55 @@
+version: 1.0.{build}
 
-image: Visual Studio 2015
+image: Visual Studio 2017
 
 branches:
  only:
   - master
   - /^ci.*$/
 
-platform:
-  - x86
+platform: x64
 
-configuration:
-  - Release
+configuration: Release
 
 # Default GENERATOR is set to "Visual Studio 9 2008"
 # See https://github.com/python-cmake-buildsystem/python-cmake-buildsystem/blob/dashboard/appveyor_dashboard.cmake
 environment:
   matrix:
 
-  - PY_VERSION: 3.7.4
-    GENERATOR: Visual Studio 14 2015 Win64
-  - PY_VERSION: 3.7.4
-    GENERATOR: Visual Studio 14 2015
+  - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+    PY_VERSION: 3.7.6
+    GENERATOR: "Visual Studio 15 2017 Win64"
+  - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+    PY_VERSION: 3.7.6
+    GENERATOR: "Visual Studio 15 2017"
 
-  - PY_VERSION: 3.6.9
-    GENERATOR: Visual Studio 14 2015 Win64
-  - PY_VERSION: 3.6.9
-    GENERATOR: Visual Studio 14 2015
+  - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+    PY_VERSION: 3.6.9
+    GENERATOR: "Visual Studio 14 2015 Win64"
+  - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+    PY_VERSION: 3.6.9
+    GENERATOR: "Visual Studio 14 2015"
 
-  - PY_VERSION: 3.5.5
-    GENERATOR: Visual Studio 14 2015 Win64
-  - PY_VERSION: 3.5.5
-    GENERATOR: Visual Studio 14 2015
+  - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+    PY_VERSION: 3.5.5
+    GENERATOR: "Visual Studio 14 2015 Win64"
+  - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+    PY_VERSION: 3.5.5
+    GENERATOR: "Visual Studio 14 2015"
     
-  - PY_VERSION: 2.7.14
-    GENERATOR: Visual Studio 14 2015 Win64
-  - PY_VERSION: 2.7.14
-    GENERATOR: Visual Studio 14 2015
+  - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+    PY_VERSION: 2.7.14
+    GENERATOR: "Visual Studio 14 2015 Win64"
+  - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+    PY_VERSION: 2.7.14
+    GENERATOR: "Visual Studio 14 2015"
 
-  - PY_VERSION: 2.7.14
-    GENERATOR: Visual Studio 12 2013 Win64
-  - PY_VERSION: 2.7.14
-    GENERATOR: Visual Studio 12 2013
+  - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2013
+    PY_VERSION: 2.7.14
+    GENERATOR: "Visual Studio 12 2013 Win64"
+  - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2013
+    PY_VERSION: 2.7.14
+    GENERATOR: "Visual Studio 12 2013"
 
   - PY_VERSION: 2.7.15
   - PY_VERSION: 2.7.14
