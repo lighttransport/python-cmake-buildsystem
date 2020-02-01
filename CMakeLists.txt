@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 2.8.6)
 
-set(PYTHON_VERSION "3.6.7" CACHE STRING "The version of Python to build.")
+set(PYTHON_VERSION "3.5.5" CACHE STRING "The version of Python to build.")
 
 ###############
 # ASI default settings
