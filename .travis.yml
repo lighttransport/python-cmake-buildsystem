@@ -61,7 +61,6 @@ sudo: false
 
 branches:
  only:
-  - master
   - /^ci.*$/
 
 addons:
