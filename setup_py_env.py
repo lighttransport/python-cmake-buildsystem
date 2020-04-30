@@ -5,6 +5,7 @@ import print_site
 from appsmiths.automata import Automata
 from pathlib import Path
 
+is_debug = False
 is_nt = os.name == 'nt'
 bindir = 'Scripts' if is_nt else 'bin'
 ext = '.exe' if is_nt else ''
@@ -131,9 +132,54 @@ def copy_python_exe(a, PR):
         pydir / f'python3{ext}')
 
 
+def fix_dll_search_path():
+    import win_fix_dlls
+    win_fix_dlls.add_path_to_dll_search(True)
+
+
+def fix_dll(fname, use_dbg_stem='_d'):
+    suffix = '.dll' if is_nt else '.so'
+    prefix = '' if is_nt else 'lib'
+    dbg_stem = use_dbg_stem if is_debug else ''
+    return f'{prefix}{fname}{dbg_stem}{suffix}'
+
+
+def fix_dll_list(base_list, use_dbg_stem='_d'):
+    return [p.parent / fix_dll(p.name, use_dbg_stem) for p in base_list]
+
+def copy_ext_dlls(a, PR):
+
+    if is_nt:
+        # 3.8+ extensions and c-types don't search PATH!!!
+        # so dlls have to be alongside the pyd
+        dll_subdir = 'bin' if is_nt else 'lib'
+        plat_dir = Path(os.environ['ASV_PLAT_PORTS'])
+        plat_dll_dir = plat_dir / dll_subdir
+        dll_list = [
+            plat_dll_dir / 'libexpat',
+        ]
+        ssl_list = [
+            plat_dll_dir / 'libssl32MD',
+            plat_dll_dir / 'libcrypto32MD'
+        ]
+        no_debug_list = [
+            plat_dll_dir / 'sqlite3',
+            plat_dll_dir / 'libffi',
+            plat_dll_dir / 'zlib',
+        ]
+        dll_list = fix_dll_list(dll_list) + fix_dll_list(ssl_list, 'd') \
+            + fix_dll_list(no_debug_list, '')
+
+        # libffi debug does not work...
+        a.cp(dll_list, PR / 'DLLs')
+
+
 def do_setup(a, PR):
 
-    print('setup_py_env::do_setup')
+    # fix_dll_search_path()
+
+    print(f'setup_py_env::do_setup {PR}')
+
     # on Windows, pip and such will fish in the registry
     # path still has various python versions first
     # better all be at same level!
@@ -141,6 +187,8 @@ def do_setup(a, PR):
 
     # install into our build
     copy_python_exe(a, PR)
+    copy_ext_dlls(a, PR)
+
     ensure_pip(a, PR)
     upgrade_pip(a, PR)
     install_virtualenv(a, PR)
@@ -162,6 +210,7 @@ Usage: python {__file__} python_root
 
 
 def main(argv=None):
+    global is_debug
     if argv is None:
         argv = sys.argv
 
@@ -171,6 +220,7 @@ def main(argv=None):
 
     # caller to pass pyroot
     PR = Path(argv[1])
+    is_debug = 'debug' in str(PR)
 
     logfile = 'log.txt'
     asi = os.environ['ASI']
