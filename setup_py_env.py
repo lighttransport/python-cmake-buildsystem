@@ -18,7 +18,7 @@ def fix_activate_path(VRdir):
     with open(fn, "r") as fh:
         sexp = re.compile(r"VIRTUAL_ENV='(.+)'")
         for line in fh:
-            # VIRTUAL_ENV='C:\Users\appsmith\asv\pyenv\glue-run-dbg'
+            # VIRTUAL_ENV='C:\Users\appsmith\asv\pyenv\versions\glue-run-dbg'
             m = sexp.search(line)
             if m:
                 # convert slashes
@@ -51,7 +51,9 @@ def compose_venv_root(PR):
     # where do we put the venv?
     drive = "i:/" if is_nt else "/i"
     vext = "dbg" if "debug" in str(PR) else "rel"
-    return Path(drive, "pyenv", f"glue-run-{vext}")
+    pyenv_dir = Path(drive, "pyenv", "versions" if not is_nt else "", f"glue-run-{vext}")
+    print("PYENV_DIR={pyenv_dir}")
+    return pyenv_dir
 
 
 def make_venv(a, PR, VRdir):
