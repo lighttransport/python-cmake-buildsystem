@@ -449,6 +449,10 @@ else()
         list(APPEND _decimal_EXTRA_SOURCES
             _decimal/libmpdec/memory.c
         )
+    else()
+        list(APPEND _decimal_EXTRA_SOURCES
+            _decimal/libmpdec/mpalloc.c
+        )
     endif()
 
     if(WIN32)

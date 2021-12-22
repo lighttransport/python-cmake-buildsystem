@@ -5,6 +5,15 @@
 #ifndef Py_PYCONFIG_H
 #define Py_PYCONFIG_H
 
+/* TODO(LTE): Support 32bit platform */
+/* The normal alignment of `long', in bytes. [Python 3.9] */
+#define ALIGNOF_LONG 8
+
+/* The normal alignment of `size_t', in bytes. [Python 3.9] */
+#define ALIGNOF_SIZE_T 8
+
+/* [Python 3.9] */
+#define PLATLIBDIR "lib"
 
 /* Define if building universal (internal helper macro) */
 #cmakedefine AC_APPLE_UNIVERSAL_BUILD 1
