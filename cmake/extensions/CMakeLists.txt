@@ -140,11 +140,13 @@ set( limit_api "")
 if ( NOT "${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
     set( limit_api "Py_LIMITED_API=0x${_limited_api_version}0000")
 endif ( NOT "${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
-add_python_extension(xxlimited REQUIRES IS_PY3 BUILD_TESTING
-    SOURCES xxlimited.c
-    DEFINITIONS "${limit_api}" Py_BUILD_CORE_MODULE
-    NO_INSTALL
-)
+
+#add_python_extension(xxlimited REQUIRES IS_PY3 BUILD_TESTING
+#    SOURCES xxlimited.c
+#    DEFINITIONS "${limit_api}" Py_BUILD_CORE_MODULE
+#    NO_INSTALL
+#)
+
 add_python_extension(xxsubtype BUILTIN REQUIRES IS_PY3 SOURCES xxsubtype.c DEFINITIONS Py_BUILD_CORE Py_BUILD_CORE_BUILTIN)
 # 3.8 zipimport is pure python
 # ASI add_python_extension(zipimport ALWAYS_BUILTIN REQUIRES IS_PY3 SOURCES zipimport.c DEFINITIONS Py_BUILD_CORE Py_BUILD_CORE_BUILTIN)
