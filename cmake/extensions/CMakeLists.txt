@@ -94,7 +94,11 @@ add_python_extension(math REQUIRES HAVE_LIBM ${WIN32_BUILTIN} SOURCES _math.c ma
 add_python_extension(mmap ${WIN32_BUILTIN} SOURCES mmapmodule.c DEFINITIONS Py_BUILD_CORE Py_BUILD_CORE_BUILTIN)
 add_python_extension(_multibytecodec ${WIN32_BUILTIN} SOURCES cjkcodecs/multibytecodec.c DEFINITIONS Py_BUILD_CORE Py_BUILD_CORE_BUILTIN)
 add_python_extension(operator ${WIN32_BUILTIN} REQUIRES IS_PY2 SOURCES operator.c DEFINITIONS Py_BUILD_CORE Py_BUILD_CORE_BUILTIN)
-add_python_extension(parser ${WIN32_BUILTIN} SOURCES parsermodule.c DEFINITIONS Py_BUILD_CORE Py_BUILD_CORE_BUILTIN)
+
+if(PY_VERSION VERSION_EQUAL "3.8" OR PY_VERSION VERSION_LESS "3.8")
+  add_python_extension(parser ${WIN32_BUILTIN} SOURCES parsermodule.c DEFINITIONS Py_BUILD_CORE Py_BUILD_CORE_BUILTIN)
+endif()
+
 add_python_extension(_random ${WIN32_BUILTIN} SOURCES _randommodule.c DEFINITIONS Py_BUILD_CORE Py_BUILD_CORE_BUILTIN)
 add_python_extension(strop ${WIN32_BUILTIN} REQUIRES IS_PY2 SOURCES stropmodule.c DEFINITIONS Py_BUILD_CORE Py_BUILD_CORE_BUILTIN)
 add_python_extension(_struct ${WIN32_BUILTIN} SOURCES _struct.c DEFINITIONS Py_BUILD_CORE Py_BUILD_CORE_BUILTIN)
@@ -124,7 +128,11 @@ add_python_extension(_testimportmultiple REQUIRES IS_PY3 SOURCES _testimportmult
 # Test multi-phase extension module init (PEP 489)
 add_python_extension(_testmultiphase REQUIRES IS_PY3 SOURCES _testmultiphase.c DEFINITIONS Py_BUILD_CORE_MODULE)
 # debug tool to trace memory blocks allocated by Python
-add_python_extension(_tracemalloc BUILTIN REQUIRES IS_PY3 SOURCES hashtable.c _tracemalloc.c DEFINITIONS Py_BUILD_CORE Py_BUILD_CORE_BUILTIN)
+if (PY_VERSION VERSION_LESS_EQUAL "3.8")
+    add_python_extension(_tracemalloc BUILTIN REQUIRES IS_PY3 SOURCES hashtable.c _tracemalloc.c DEFINITIONS Py_BUILD_CORE Py_BUILD_CORE_BUILTIN)
+else()
+    add_python_extension(_tracemalloc BUILTIN REQUIRES IS_PY3 SOURCES _tracemalloc.c DEFINITIONS Py_BUILD_CORE Py_BUILD_CORE_BUILTIN)
+endif()
 add_python_extension(_weakref BUILTIN REQUIRES IS_PY3 SOURCES _weakref.c DEFINITIONS Py_BUILD_CORE Py_BUILD_CORE_BUILTIN)
 math(EXPR _limited_api_version "${PY_VERSION_MAJOR} * 100 + ${PY_VERSION_MINOR}")
 
@@ -275,7 +283,7 @@ elseif(WIN32)
     add_python_extension(_multiprocessing
         SOURCES _multiprocessing/multiprocessing.c
                 _multiprocessing/semaphore.c
-                ${_multiprocessing${PY_VERSION_MAJOR}_SOURCES} 
+                ${_multiprocessing${PY_VERSION_MAJOR}_SOURCES}
         DEFINITIONS Py_BUILD_CORE_MODULE
         LIBRARIES ws2_32
     )
@@ -431,12 +439,18 @@ else()
         _decimal/libmpdec/fnt.c
         _decimal/libmpdec/fourstep.c
         _decimal/libmpdec/io.c
-        _decimal/libmpdec/memory.c
         _decimal/libmpdec/mpdecimal.c
         _decimal/libmpdec/numbertheory.c
         _decimal/libmpdec/sixstep.c
         _decimal/libmpdec/transpose.c
     )
+
+    if(PY_VERSION VERSION_LESS_EQUAL "3.8")
+        list(APPEND _decimal_EXTRA_SOURCES
+            _decimal/libmpdec/memory.c
+        )
+    endif()
+
     if(WIN32)
         if(${CMAKE_SIZEOF_VOID_P} EQUAL 8)
             enable_language(ASM_MASM)

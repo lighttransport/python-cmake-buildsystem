@@ -71,13 +71,19 @@ elseif(WIN32)
 endif()
 
 set(PARSER_COMMON_SOURCES # Equivalent to POBJS in Makefile.pre
-    ${SRC_DIR}/Parser/acceler.c
-    ${SRC_DIR}/Parser/grammar1.c
-    ${SRC_DIR}/Parser/listnode.c
-    ${SRC_DIR}/Parser/node.c
     ${SRC_DIR}/Parser/parser.c
     ${SRC_DIR}/Parser/token.c
 )
+
+if (PYTHON_VERSION VERSION_LESS_EQUAL "3.8")
+    list(APPEND PARSER_COMMON_SOURCES
+        ${SRC_DIR}/Parser/grammar1.c
+        ${SRC_DIR}/Parser/listnode.c
+        ${SRC_DIR}/Parser/node.c
+        ${SRC_DIR}/Parser/acceler.c
+    )
+else()
+endif()
 
 set(OBJECT2_SOURCES
     ${SRC_DIR}/Objects/bufferobject.c
@@ -228,7 +234,6 @@ set(PYTHON_COMMON_SOURCES
     ${SRC_DIR}/Python/getopt.c
     ${SRC_DIR}/Python/getplatform.c
     ${SRC_DIR}/Python/getversion.c
-    ${SRC_DIR}/Python/graminit.c
     ${SRC_DIR}/Python/import.c
     ${SRC_DIR}/Python/importdl.c
     ${SRC_DIR}/Python/initconfig.c
@@ -236,7 +241,6 @@ set(PYTHON_COMMON_SOURCES
     ${SRC_DIR}/Python/modsupport.c
     ${SRC_DIR}/Python/mysnprintf.c
     ${SRC_DIR}/Python/mystrtoul.c
-    ${SRC_DIR}/Python/peephole.c
     ${SRC_DIR}/Python/preconfig.c
     ${SRC_DIR}/Python/pyarena.c
     ${SRC_DIR}/Python/pyctype.c
@@ -252,6 +256,13 @@ set(PYTHON_COMMON_SOURCES
     ${SRC_DIR}/Python/traceback.c
     ${SRC_DIR}/Python/_warnings.c
 )
+if (PY_VERSION VERSION_LESS_EQUAL "3.8")
+    list(APPEND PYTHON_COMMON_SOURCES
+        ${SRC_DIR}/Python/graminit.c
+        ${SRC_DIR}/Python/peephole.c
+    )
+endif()
+
 if(PY_VERSION VERSION_LESS "3.7")
     list(APPEND PYTHON_COMMON_SOURCES
         ${SRC_DIR}/Python/random.c
@@ -311,13 +322,19 @@ list(APPEND MODULE_SOURCES
 set(LIBPYTHON_OMIT_FROZEN_SOURCES
     ${SRC_DIR}/Modules/getbuildinfo.c
     ${SRC_DIR}/Parser/myreadline.c
-    ${SRC_DIR}/Parser/parsetok.c
     ${SRC_DIR}/Parser/tokenizer.c
     ${MODULE_SOURCES}
     ${OBJECT_COMMON_SOURCES}
     ${PARSER_COMMON_SOURCES}
     ${PYTHON_COMMON_SOURCES}
 )
+
+if (PYTHON_VERSION VERSION_LESS_EQUAL "3.8")
+    list(APPEND LIBPYTHON_OMIT_FROZEN_SOURCES
+        ${SRC_DIR}/Parser/parsetok.c
+    )
+else() # 3.9+
+endif()
 
 # List of builtin extensions
 get_property(builtin_extensions GLOBAL PROPERTY builtin_extensions)
@@ -470,9 +487,13 @@ add_custom_target(freeze_modules DEPENDS ${LIBPYTHON_FROZEN_SOURCES})
 endif()
 
 # Build pgen objects
-set(PGEN2_SOURCES
-    ${SRC_DIR}/Parser/parsetok.c
-)
+if (PYTHON_VERSION VERSION_LESS_EQUAL "3.8")
+    set(PGEN2_SOURCES
+        ${SRC_DIR}/Parser/parsetok.c
+    )
+else () # 3.9+
+endif ()
+
 set(PGEN3_SOURCES
     ${SRC_DIR}/Python/dynamic_annotations.c
 )
