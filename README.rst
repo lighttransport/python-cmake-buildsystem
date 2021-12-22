@@ -1,6 +1,18 @@
 CPython CMake Buildsystem
 =========================
 
+Light Transport Entertainmet, Inc's fork of `python-cmake-buildsystem`.
+This fork supports python 3.10 or later.
+
+Status
+------
+
+* [x] 64bit x86-64 Linux
+* [ ] 32bit Linux
+* [ ] aarch64 Linux
+* [ ] 64bit Windows 10 or later
+
+
 Overview
 --------
 
@@ -30,7 +42,7 @@ How to use this buildsystem:
 .. code:: bash
 
   cd ~/scratch
-  git clone git://github.com/python-cmake-buildsystem/python-cmake-buildsystem
+  git clone git://github.com/lighttransport/python-cmake-buildsystem
 
 2. Build
 

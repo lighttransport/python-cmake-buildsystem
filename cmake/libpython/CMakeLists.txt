@@ -75,7 +75,16 @@ set(PARSER_COMMON_SOURCES # Equivalent to POBJS in Makefile.pre
     ${SRC_DIR}/Parser/token.c
 )
 
-if (PYTHON_VERSION VERSION_LESS_EQUAL "3.8")
+if (PY_VERSION VERSION_GREATER_EQUAL "3.9")
+    list(APPEND PARSER_COMMON_SOURCES
+        ${SRC_DIR}/Parser/peg_api.c
+        ${SRC_DIR}/Parser/pegen.c
+        #${SRC_DIR}/Parser/pegen_errors.c
+        ${SRC_DIR}/Parser/string_parser.c
+    )
+endif()
+
+if (PY_VERSION VERSION_LESS_EQUAL "3.8")
     list(APPEND PARSER_COMMON_SOURCES
         ${SRC_DIR}/Parser/grammar1.c
         ${SRC_DIR}/Parser/listnode.c
@@ -110,6 +119,13 @@ if(MSVC)
         ${SRC_DIR}/PC/invalid_parameter_handler.c
     )
 endif()
+if(PY_VERSION VERSION_GREATER_EQUAL "3.9")
+    list(APPEND OBJECT3_SOURCES
+        ${SRC_DIR}/Objects/genericaliasobject.c
+        ${SRC_DIR}/Objects/unionobject.c
+    )
+endif()
+
 if(PY_VERSION VERSION_GREATER_EQUAL "3.7")
     list(APPEND OBJECT3_SOURCES
         ${SRC_DIR}/Objects/call.c
@@ -256,6 +272,14 @@ set(PYTHON_COMMON_SOURCES
     ${SRC_DIR}/Python/traceback.c
     ${SRC_DIR}/Python/_warnings.c
 )
+
+if (PY_VERSION VERSION_GREATER_EQUAL "3.9")
+    list(APPEND PYTHON_COMMON_SOURCES
+        ${SRC_DIR}/Python/hashtable.c
+        ${SRC_DIR}/Python/suggestions.c
+    )
+endif ()
+
 if (PY_VERSION VERSION_LESS_EQUAL "3.8")
     list(APPEND PYTHON_COMMON_SOURCES
         ${SRC_DIR}/Python/graminit.c
@@ -329,7 +353,7 @@ set(LIBPYTHON_OMIT_FROZEN_SOURCES
     ${PYTHON_COMMON_SOURCES}
 )
 
-if (PYTHON_VERSION VERSION_LESS_EQUAL "3.8")
+if (PY_VERSION VERSION_LESS_EQUAL "3.8")
     list(APPEND LIBPYTHON_OMIT_FROZEN_SOURCES
         ${SRC_DIR}/Parser/parsetok.c
     )
@@ -487,7 +511,7 @@ add_custom_target(freeze_modules DEPENDS ${LIBPYTHON_FROZEN_SOURCES})
 endif()
 
 # Build pgen objects
-if (PYTHON_VERSION VERSION_LESS_EQUAL "3.8")
+if (PY_VERSION VERSION_LESS_EQUAL "3.8")
     set(PGEN2_SOURCES
         ${SRC_DIR}/Parser/parsetok.c
     )
