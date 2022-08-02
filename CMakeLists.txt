@@ -793,4 +793,4 @@ endif()
 install(FILES ${SRC_DIR}/LICENSE DESTINATION ${license_destination} COMPONENT Runtime RENAME LICENSE.txt)
 
 # run script last
-add_subdirectory(post-install)
+#add_subdirectory(post-install)
