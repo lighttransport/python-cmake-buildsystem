@@ -152,6 +152,20 @@ endif(CMAKE_BUILD_TYPE MATCHES Debug)
 option(WITH_PYMALLOC "Define if you want to compile in Python-specific mallocs" ON)
 option(WITH_THREAD "Compile in rudimentary thread support" ON)
 if(UNIX)
+    set(CMAKE_BUILD_RPATH_USE_ORIGIN TRUE)
+
+    # when building, don't use the install RPATH already
+    # (but later on when installing)
+    set(CMAKE_BUILD_WITH_INSTALL_RPATH FALSE)
+
+    # relative to `python` binary
+    set(CMAKE_INSTALL_RPATH "$ORIGIN/../lib")
+
+    #list(FIND CMAKE_PLATFORM_IMPLICIT_LINK_DIRECTORIES "${CMAKE_INSTALL_PREFIX}/lib" isSystemDir)
+    #if("${isSystemDir}" STREQUAL "-1")
+    #    set(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/lib")
+    #endif("${isSystemDir}" STREQUAL "-1")
+
     option(WITH_STATIC_DEPENDENCIES "Restrict extensions and external dependencies to static libraries" OFF)
     if(WITH_STATIC_DEPENDENCIES)
         if(NOT POLICY CMP0065)
