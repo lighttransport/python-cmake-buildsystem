@@ -34,6 +34,7 @@ if(APPLE)
   include(cmake/PythonAutoDetectOSX.cmake)
   set(MACOSX_DEPLOYMENT_TARGET ${CMAKE_OSX_DEPLOYMENT_TARGET})
   message(STATUS "${_msg} - ${MACOSX_DEPLOYMENT_TARGET}")
+
 endif()
 
 if(POLICY CMP0042)
@@ -374,6 +375,14 @@ endif()
 # Enable CXX language to support building of _distutils_findvs extension
 if(WIN32 AND IS_PY3)
   enable_language(CXX)
+endif()
+
+# BigSur fix
+if (APPLE)
+  # BigSur
+  if ("${MACOSX_DEPLOYMENT_TARGET}" VERSION_GREATER_EQUAL "11.0")
+    append_if_absent(CMAKE_C_FLAGS "-DHAVE_DYLD_SHARED_CACHE_CONTAINS_PATH=1")
+  endif()
 endif()
 
 # Options depending of the python version
