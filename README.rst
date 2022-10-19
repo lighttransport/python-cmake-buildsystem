@@ -204,6 +204,9 @@ options on the commandline with `-DOPTION=VALUE`, or use the "ccmake" gui.
     If [OPENSSL_INCLUDE_DIR, OPENSSL_LIBRARIES] are found, extensions [HASHLIB, SSL] will be built
     If [OPENSSL_INCLUDE_DIR, OPENSSL_LIBRARIES] are NOT found, extensions [SHA, SHA256, SHA512] will be built
 
+  USE_BUILTIN_LIBRESSL=ON     (defaults to ON)
+    Use BuiltIn LibreSSL source tree for OpenSSL replacemenet.
+
   USE_SYSTEM_TCL=ON|OFF         (defaults to ON)
     If set to OFF, no attempt to detect Tcl libraries will be done.
     Associated python extensions are: TKINTER

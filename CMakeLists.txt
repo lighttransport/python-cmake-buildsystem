@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 2.8.6)
 
 project(Python C ASM)
 
-set(PYTHON_VERSION "3.10.6" CACHE STRING "The version of Python to build.")
+set(PYTHON_VERSION "3.10.8" CACHE STRING "The version of Python to build.")
 
 ###############
 # ASI default settings
@@ -137,6 +137,7 @@ if(IS_PY3)
 endif()
 
 cmake_dependent_option(USE_BUILTIN_ZLIB "Use builtin ZLIB" ${_use_builtin_zlib_default} "NOT USE_SYSTEM_ZLIB" OFF)
+cmake_dependent_option(USE_BUILTIN_LIBRESSL "Use builtin LibreSSL source tree(deps/libressl-3.6.0) as a replacement for OpenSSL" ON "NOT USE_SYSTEM_OPENSSL" OFF)
 
 cmake_dependent_option(USE_LIBEDIT "Use libedit instead of readline" OFF
                        "USE_SYSTEM_READLINE" OFF)
@@ -287,6 +288,7 @@ set(_download_3.9.5_md5 "364158b3113cf8ac8db7868ce40ebc7b")
 # 3.10.x
 set(_download_3.10.1_md5 "91822157a97da16203877400c810d93e")
 set(_download_3.10.6_md5 "d76638ca8bf57e44ef0841d2cde557a0")
+set(_download_3.10.8_md5 "fbe3fff11893916ad1756b15c8a48834")
 
 set(_extracted_dir "Python-${PY_VERSION}")
 
