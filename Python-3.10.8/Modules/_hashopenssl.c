@@ -715,7 +715,7 @@ _hashlib.HASHXOF.digest as EVPXOF_digest
 Return the digest value as a bytes object.
 [clinic start generated code]*/
 
-#if !defiend(LIBRESSL_VERSION_NUMBER)
+#if !defined(LIBRESSL_VERSION_NUMBER)
 static PyObject *
 EVPXOF_digest_impl(EVPobject *self, Py_ssize_t length)
 /*[clinic end generated code: output=ef9320c23280efad input=816a6537cea3d1db]*/

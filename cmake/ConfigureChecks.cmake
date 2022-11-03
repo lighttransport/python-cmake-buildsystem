@@ -154,19 +154,19 @@ endif()
 if(USE_SYSTEM_OpenSSL)
     if (USE_BUILTIN_OPENSSL)
         # Relative to ../CMakeLists.txt
-        add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/deps/openssl-cmake)
+        add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/deps/openssl-cmake openssl)
         set(OPENSSL_FOUND 1)
-        set(OPENSSL_INCLUDE_DIR 1)
+        #set(OPENSSL_INCLUDE_DIR 1)
         # There is no *generated* headef file, so point to src/include
         set(OPENSSL_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/deps/openssl-cmake/include)
 
         # TODO: Need to add prefix?
         set(OPENSSL_CRYPTO_LIBRARY libcrypto.a)
-        set(OPENSSL_CRYPTO_LIBRARIES crypto)
+        set(OPENSSL_CRYPTO_LIBRARIES libcrypto.a)
         set(OPENSSL_SSL_LIBRARY libssl.a)
-        set(OPENSSL_SSL_LIBRARIES ssl)
-        set(OPENSSL_LIBRARIES "tls ssl crypto")
-        set(OPENSSL_VERSION 3.6.0)
+        set(OPENSSL_SSL_LIBRARIES libssl.a)
+        set(OPENSSL_LIBRARIES "ssl crypto")
+        set(OPENSSL_VERSION "1.1.1n")
 
         message(STATUS "OPENSSL_FOUND=${OPENSSL_FOUND}")
         message(STATUS "OPENSSL_INCLUDE_DIR=${OPENSSL_INCLUDE_DIR}")
