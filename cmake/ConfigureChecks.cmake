@@ -152,13 +152,13 @@ if(IS_PY3 AND USE_SYSTEM_LIBMPDEC)
 endif()
 
 if(USE_SYSTEM_OpenSSL)
-    if (USE_BUILTIN_LIBRESSL AND NOT WIN32)
+    if (USE_BUILTIN_OPENSSL)
         # Relative to ../CMakeLists.txt
-        add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/deps/libressl-3.6.0)
+        add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/deps/openssl-cmake)
         set(OPENSSL_FOUND 1)
         set(OPENSSL_INCLUDE_DIR 1)
         # There is no *generated* headef file, so point to src/include
-        set(OPENSSL_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/deps/libressl-3.6.0/include)
+        set(OPENSSL_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/deps/openssl-cmake/include)
 
         # TODO: Need to add prefix?
         set(OPENSSL_CRYPTO_LIBRARY libcrypto.a)

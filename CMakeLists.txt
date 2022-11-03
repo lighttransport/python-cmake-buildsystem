@@ -137,7 +137,7 @@ if(IS_PY3)
 endif()
 
 cmake_dependent_option(USE_BUILTIN_ZLIB "Use builtin ZLIB" ${_use_builtin_zlib_default} "NOT USE_SYSTEM_ZLIB" OFF)
-cmake_dependent_option(USE_BUILTIN_LIBRESSL "Use builtin LibreSSL source tree(deps/libressl-3.6.0) as a replacement for OpenSSL" ON "NOT USE_SYSTEM_OPENSSL" OFF)
+cmake_dependent_option(USE_BUILTIN_OPENSSL "Use builtin OpenSSL source tree(deps/openssl-cmake)" OFF "NOT USE_SYSTEM_OPENSSL" OFF)
 
 cmake_dependent_option(USE_LIBEDIT "Use libedit instead of readline" OFF
                        "USE_SYSTEM_READLINE" OFF)
